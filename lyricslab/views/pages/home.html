@@ -29,30 +29,63 @@
     background-color: #efefef !important;
   }
 </style>
-    <div class="uploadbx mt-5 pt-2">
+    <div class="uploadbx mt-5 pt-2" id="viewApp">
        <div class="container col-12 col-lg-5 p-5 mt-5">
            <div class="header mt-3" align="center">
             <h2 class="title display-5 fw-semibold">Upload file.</h2>
             <p class="desc-text lead fw-semibold txt-light opacity-80 w-75 mt-3">Select and upload and audio and video file to genrate lyrics automaticaly using Ai.</p>
            </div>
            
-           <input type="file" name="fileObj" id="fileObj" item-hidden="true" class="form-control" placeholder="file here..." value="" />
+           <input type="file" name="fileObj" id="fileObj" item-hidden="true" class="form-control" placeholder="file here..." ref="fileObj" @change="onMediaFileSelection" value="" />
 
-           <div id="btnFileSelector" class="file-selector c-pointer mt-4 w-70 mx-auto mx-1 p-0 d-flex justify-content-start align-items-stretch gap-0 no-wrap rounded rounded-3 border border-2">
+           <div id="btnFileSelector" @click="toggleFilePicker" class="file-selector c-pointer mt-4 w-70 mx-auto mx-1 p-0 d-flex justify-content-start align-items-stretch gap-0 no-wrap rounded rounded-3 border border-2">
            <div class="d-block w-auto p-4 d-flex justify-content-center align-items-center">
            <span class="bi bi-upload fs-4"></span>
            </div>
             <div class="d-flex w-auto flex-column p-3 ps-0 justify-content-center align-items-start gap-0">
             <span class="title fw-bold fs-5">Click to Select a Media File</span>
-            <span class="desc-text fw-semibold txt-lighter opacity-80 fs-6 small">Select a .mp4 or .mp3 file to upload by clicking here...</span>
+            <span class="desc-text fw-semibold txt-lighter opacity-80 fs-6 small">Select a .mp4 or .mp3 file to upload by clicking here... </span>
             </div>
            </div>
            
            
-           <div class="footer mt-5 d-flex justify-content-center align-items-center" item-hidden="true">
+           <div class="footer mt-5 d-flex justify-content-center align-items-center" :item-hidden="mediaFileUploaded == true ? false : true">
             <button class="btnUpload btn btn-primary fs-6 fw-semibold rounded rounded-3 m-1" id="btnUploader">Generate Lyrics <span class="bi bi-circle-square ms-1"></span></button>
            <button class="btnCancel btn btn-dark fs-6 fw-semibold rounded rounded-3 m-1" id="btnCancel">Cancel <span class="bi bi-trash3 ms-1"></span></button>
            </div>
        </div>
     </div>
+
+
+    <script>
+       const app = createApp({
+           delimiters: ["${", "}"],
+           data(){
+            return {
+                mediaFileUploaded: false
+            }
+           },
+           methods: {
+              toggleFilePicker(){
+                 // Media_File_Input_Form
+                 this.$refs.fileObj.click();
+              },
+              onMediaFileSelection(obj){
+                // Validate_and_filter_form_data
+                
+                 
+              }
+           }
+       });
+
+       app.mount("#viewApp");
+       
+
+       //
+       // #File : obj.target.files[0]
+                // #FileName : obj.target.files[0].name
+                // #FileType : obj.target.files[0].type
+                // #FileSize : obj.target.files[0].size
+                //___
+    </script>
 {% endblock %}
