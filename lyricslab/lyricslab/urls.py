@@ -20,6 +20,7 @@ from .views import *
 
 urlpatterns = [
     # custom
+    path('', home_view, name="default_pages_view"),
     path('home', home_view, name="home_view"),
 
     # default
