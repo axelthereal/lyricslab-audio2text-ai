@@ -1,10 +1,40 @@
 {% extends "headers/base.html" %}
 
 {% block bodycontent %}
-    <div class="uploadbx">
-       <div class="container">
-           <h2 class="title">Upload your media file.</h2>
-           <p class="desc-text">Select and upload and audio and video file to genrate lyrics automaticaly using Ai.</p>
+
+<style>
+  .txt-lighter{
+    color: #6d6e75;
+  }
+  .txt-light{
+    color: #9a9a9a;
+  }
+  .c-pointer{ cursor: pointer;}
+  .btn{
+    box-shadow: 52px 30px 330px rgba(0, 0, 0, 0.12) !important;
+  }
+  #btnFileSelector:hover {
+    background-color: #fafafa !important;
+  }
+  #btnFileSelector:active{
+    background-color: #efefef !important;
+  }
+</style>
+    <div class="uploadbx my-5">
+       <div class="container col-12 col-lg-5 p-5 my-5">
+           <div class="header mt-3" align="center">
+            <h2 class="title display-5 fw-semibold">Upload file.</h2>
+            <p class="desc-text lead fw-semibold txt-light opacity-80 w-75 mt-3">Select and upload and audio and video file to genrate lyrics automaticaly using Ai.</p>
+           </div>
+           
+           <input type="file" name="fileObj" id="fileObj" class="visually-hidden form-control" placeholder="file here..." value="" />
+
+           <div id="btnFileSelector" class="file-selector c-pointer mt-5 mb-4 p-3 d-flex flex-column justify-content-center align-items-start gap-0 rounded rounded-3 border border-2">
+            <span class="title fw-bold fs-5">Click to Select a Media File</span>
+            <span class="desc-text fw-semibold txt-lighter opacity-80 fs-6 small">Select a .mp4 or .mp3 file to upload by clicking here...</span>
+           </div>
+
+           <button class="btnUpload btn btn-primary lead fw-semibold rounded rounded-3" id="btnUploader">Generate Lyrics</button>
        </div>
     </div>
 {% endblock %}
