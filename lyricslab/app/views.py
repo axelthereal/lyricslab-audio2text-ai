@@ -7,3 +7,4 @@ def home_view(req):
     }
     return render(req, 'pages/home.html', ctx)
  
+ 
