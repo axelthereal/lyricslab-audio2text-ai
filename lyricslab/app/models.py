@@ -1,5 +1,6 @@
 from django.db import models
 
-class Media(models.models):
+# Create your models here.
+class Media(models.Model):
     title = models.CharField(max_length=255)
     media_file = models.FileField(upload_to='media/')

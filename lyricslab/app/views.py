@@ -3,6 +3,7 @@ from django.http import HttpResponse
 
 def home_view(req):
     ctx = {
-        "view": "Home"
+        "view_name": "Home"
     }
     return render(req, 'pages/home.html', ctx)
+ 
