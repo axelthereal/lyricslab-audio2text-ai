@@ -20,7 +20,23 @@
   }
  [item-hidden="false"]{
   display: block !important;
-  animation:loadSlide 0.5s ease-in 0.2s 1 normal forwards; 
+  opacity: 0;  
+  animation:loadSlide 0.9s ease-in-out 0.1s 1 normal forwards; 
+  }
+  @keyframes loadSlide {
+      0%{
+        opacity: 0;  
+      }
+      100%{
+        opacity: 1; 
+      }
+  }
+
+  [media-loaded="false"]{
+
+   }
+  [media-loaded="false"]{
+    
   }
 
   #btnFileSelector:hover {
@@ -51,8 +67,8 @@
            
            
            <div class="footer mt-5 d-flex justify-content-center align-items-center" :item-hidden="mediaFileUploaded == true ? false : true">
-            <button class="btnUpload btn btn-primary fs-6 fw-semibold rounded rounded-3 m-1" id="btnUploader">Generate Lyrics <span class="bi bi-circle-square ms-1"></span></button>
-           <button class="btnCancel btn btn-dark fs-6 fw-semibold rounded rounded-3 m-1" id="btnCancel">Cancel <span class="bi bi-trash3 ms-1"></span></button>
+            <button class="btnUpload btn btn-primary fs-6 fw-semibold rounded rounded-3 m-1" id="btnUploader" :disabled="isFileUploading">Generate Lyrics <span class="bi bi-circle-square ms-1"></span></button>
+           <button class="btnCancel btn btn-dark fs-6 fw-semibold rounded rounded-3 m-1" id="btnCancel" @click="cancelAiGeneration" :disabled="isFileUploading">Cancel <span class="bi bi-trash3 ms-1"></span></button>
            </div>
        </div>
     </div>
@@ -63,7 +79,9 @@
            delimiters: ["${", "}"],
            data(){
             return {
-                mediaFileUploaded: false
+                mediaFileUploaded: false,
+                isFileUploading: false,
+                mediaObj: null
             }
            },
            methods: {
@@ -73,8 +91,14 @@
               },
               onMediaFileSelection(obj){
                 // Validate_and_filter_form_data
-                
-                 
+                  // activateAiGeneration
+                   this.mediaFileUploaded = true; 
+                   this.mediaObject = obj.target;      
+              },
+              cancelAiGeneration(){
+                this.mediaFileUploaded = false;
+                this.isFileUploading = false;
+                this.mediaObj = null;
               }
            }
        });
