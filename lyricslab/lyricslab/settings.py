@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,13 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-haw9^==l+lylaf%&n)k0=8b^@uf7mnd82i26b27*hynr*sz9ff'
+SECRET_KEY = '@app18node$v12~5823dhd237#9^==l+lylaf%&n)k0=8b^@uf7mnd82i26b27*hynr*sz9ff'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [] 
 
 # Application definition
 
@@ -54,7 +54,7 @@ ROOT_URLCONF = 'lyricslab.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "views")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -115,7 +115,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = 'assets/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "files")]
+
+# Media files (Images, Videos)
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = [os.path.join(BASE_DIR, "cloud")]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
