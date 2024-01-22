@@ -20,6 +20,7 @@ import views
 
 urlpatterns = [
     # custom
+    path('home', admin.site.urls, name="home_view"),
 
     # default
     path('admin/', admin.site.urls),
