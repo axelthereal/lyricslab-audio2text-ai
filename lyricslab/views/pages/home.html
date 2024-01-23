@@ -127,8 +127,24 @@
   .loading-bar-banner .state-txt {
     display: flex;
     justify-content: end;
-    color:linear-gradient(to right, #ffab4b, #f45872, #a94a8c) !important;
+    background: -webkit-linear-gradient(#f45872, #a94a8c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
+  .footer-end .btnPlay{
+      color:#fff !important;
+      overflow: hidden;
+      border: none !important;
+      box-shadow: none !important;
+      box-sizing: border-box;
+      background: linear-gradient(to right, #ffab4b, #f45872, #a94a8c);
+      background-clip: border-box; 
+  }
+  .footer-end .btnPlay:hover{
+    background: linear-gradient(to left, #ffab4b, #f45872, #a94a8c);
+  }
+  
 
 </style>
     <div class="uploadbx mt-5 pt-2" id="viewApp">
@@ -141,7 +157,7 @@
            <input type="file" name="fileObj" id="fileObj" item-hidden="true" class="form-control" placeholder="file here..." ref="fileObj" @change="onMediaFileSelection" value="" />
 
    
-           <div class="btnFileSelector" :obj-hidden="mediaFileUploaded" v-if="mediaFileUploaded == false">
+           <div class="btnFileSelector" :obj-hidden="mediaFileUploaded && !generationEnd" v-if="mediaFileUploaded == false">
            <div id="btnFileSelector"  @click="toggleFilePicker" class="file-selector c-pointer mt-5 w-70 mx-auto mx-1 p-0 d-flex justify-content-start align-items-stretch gap-0 no-wrap rounded rounded-3 border border-2">
            <div class="d-block w-auto p-4 d-flex justify-content-center align-items-center">
            <span class="bi bi-upload fs-4"></span>
@@ -167,18 +183,28 @@
            </div>
            </div>
 
-           <div class="loading-bar-banner w-70 mt-2" :obj-hidden="!mediaFileUploaded" v-if="isFileUploading">
+           <div v-if="isFileUploading" class="loading-bar-banner w-70 mt-2" :obj-hidden="!mediaFileUploaded">
              <div class="loading-bar w-100">
               <span class="inner-bar"></span>
              </div>
-             <span class="state-txt mt-2 fs-6 fw-semibold">Uploading File...</span>
+             <div class="status" v-if="isFileUploading">
+              <span v-if="!generationStarted" class="state-txt mt-1 fs-6 fw-semibold">Uploading File...</span> 
+             <span class="state-txt mt-1 fs-6 fw-semibold" v-else>Generating Lyrics...</span>
+             </div>
            </div>
            
            
-           <div class="footer mt-4 d-flex justify-content-center align-items-center" :item-hidden="mediaFileUploaded == true ? false : true">
+           <div class="footer mt-4 d-flex justify-content-center align-items-center" :item-hidden="mediaFileUploaded == true && generationEnd == false ? false : true">
             <button class="btnUpload btn btn-primary fs-6 fw-semibold rounded rounded-3 m-1" id="btnUploader" @click="startAiGeneration" :disabled="isFileUploading">Generate Lyrics <span class="bi bi-circle-square ms-1"></span></button>
            <button class="btnCancel btn btn-dark fs-6 fw-semibold rounded rounded-3 m-1" id="btnCancel" @click="cancelAiGeneration" :disabled="isFileUploading">Cancel <span class="bi bi-trash3 ms-1"></span></button>
            </div>
+
+
+           <div class="footer footer-end mt-4 d-flex justify-content-center align-items-center" :item-hidden="mediaFileUploaded == true && generationEnd == true ? false : true">
+            <button class="btnPlay btn btn-default fs-6 fw-semibold rounded rounded-3 m-1" id="btnPlay"  :disabled="isFileUploading">Play media <span class="bi bi-play-btn ms-1"></span></button>
+           <button class="btnCancel btn btn-dark fs-6 fw-semibold rounded rounded-3 m-1" id="btnDownload"  :disabled="isFileUploading">Dowload Lyrics File <span class="bi bi-download ms-1"></span></button>
+           </div>
+
        </div>
     </div>
 
@@ -191,7 +217,9 @@
            data(){
             return {
                 mediaFileUploaded: false,
-                isFileUploading: false, 
+                isFileUploading: false,
+                generationStarted: false, 
+                generationEnd: false,
                 mediaObj: null
             }
            },
@@ -209,6 +237,20 @@
               },
               startAiGeneration(){
                 this.isFileUploading = true;
+
+                // on_generation_start
+                setTimeout(this.onGenerationStart, 2500);
+
+              },
+              onGenerationStart(){
+                this.generationStarted = true;
+                 // on_generation_ends
+                 setTimeout(this.onGenerationEnds, 3500);
+              },
+              onGenerationEnds(){
+                this.isFileUploading = false;
+                this.generationStarted = false;
+                this.generationEnd = true; 
               },
               cancelAiGeneration(){
                 this.mediaFileUploaded = false;
