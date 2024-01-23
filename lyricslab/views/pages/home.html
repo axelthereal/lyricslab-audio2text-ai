@@ -102,6 +102,34 @@
       color: #f45872;
   }
 
+   .loading-bar-banner{
+    margin-left: 0px !important;
+   }
+  .loading-bar-banner .loading-bar{
+        display: block;
+        overflow: hidden;
+        border-radius: 5px;
+        height: 7px;
+        background-color: #dcdbdb;
+  }
+  .loading-bar-banner .loading-bar .inner-bar{
+         display: block;
+         height: 100%;
+         width: 15%;
+         background:linear-gradient(to right, #ffab4b, #f45872, #a94a8c) !important;
+         margin-left: -15%;
+         animation: loadingBar 2s ease-in-out 0.2s infinite normal forwards;
+  }
+  @keyframes loadingBar {
+     0% { margin-left: -15%;}
+     100% { margin-left: 100%;}
+  }
+  .loading-bar-banner .state-txt {
+    display: flex;
+    justify-content: end;
+    color:linear-gradient(to right, #ffab4b, #f45872, #a94a8c) !important;
+  }
+
 </style>
     <div class="uploadbx mt-5 pt-2" id="viewApp">
        <div class="container col-12 div col-lg-5 p-5 mt-5">
@@ -138,10 +166,17 @@
              </div>
            </div>
            </div>
+
+           <div class="loading-bar-banner w-70 mt-2" :obj-hidden="!mediaFileUploaded" v-if="isFileUploading">
+             <div class="loading-bar w-100">
+              <span class="inner-bar"></span>
+             </div>
+             <span class="state-txt mt-2 fs-6 fw-semibold">Uploading File...</span>
+           </div>
            
            
            <div class="footer mt-4 d-flex justify-content-center align-items-center" :item-hidden="mediaFileUploaded == true ? false : true">
-            <button class="btnUpload btn btn-primary fs-6 fw-semibold rounded rounded-3 m-1" id="btnUploader" :disabled="isFileUploading">Generate Lyrics <span class="bi bi-circle-square ms-1"></span></button>
+            <button class="btnUpload btn btn-primary fs-6 fw-semibold rounded rounded-3 m-1" id="btnUploader" @click="startAiGeneration" :disabled="isFileUploading">Generate Lyrics <span class="bi bi-circle-square ms-1"></span></button>
            <button class="btnCancel btn btn-dark fs-6 fw-semibold rounded rounded-3 m-1" id="btnCancel" @click="cancelAiGeneration" :disabled="isFileUploading">Cancel <span class="bi bi-trash3 ms-1"></span></button>
            </div>
        </div>
@@ -171,6 +206,9 @@
                    this.mediaObj = obj.target;  
                    this.mediaFileUploaded = true; 
                     
+              },
+              startAiGeneration(){
+                this.isFileUploading = true;
               },
               cancelAiGeneration(){
                 this.mediaFileUploaded = false;
