@@ -32,13 +32,15 @@
       }
   }
 
-  [obj-hidden="false"]{ 
+  
+   
+  [obj-hidden="true"]{ 
      display: block;
      width: 100%;
      margin-left: 0px; 
      margin-top: 0px;
      opacity: 1;
-     animation: hide 0.9s ease-in-out 0.1s 1 normal forwards; 
+     animation: hide 0.9s ease-in-out 0.0s 1 normal forwards; 
    }
    @keyframes hide {
       0% {
@@ -52,13 +54,16 @@
         opacity: 0;
       }
   }
-   [obj-hidden="true"]{
-    display: block;
+   [obj-hidden="false"]{
+     display: block;
      width: 100%;
      margin-left: -50px; 
      margin-top: -30px;
      opacity: 0;
      animation: reveal 0.9s ease-in-out 0.1s 1 normal forwards; 
+  }
+  [obj-hidden='none']{
+    display: none;
   }
 
   @keyframes reveal {
@@ -107,9 +112,8 @@
            
            <input type="file" name="fileObj" id="fileObj" item-hidden="true" class="form-control" placeholder="file here..." ref="fileObj" @change="onMediaFileSelection" value="" />
 
-           
-
-           <div class="btnFileSelector" obj-hidden="false">
+   
+           <div class="btnFileSelector" :obj-hidden="mediaFileUploaded" v-if="mediaFileUploaded == false">
            <div id="btnFileSelector"  @click="toggleFilePicker" class="file-selector c-pointer mt-4 w-70 mx-auto mx-1 p-0 d-flex justify-content-start align-items-stretch gap-0 no-wrap rounded rounded-3 border border-2">
            <div class="d-block w-auto p-4 d-flex justify-content-center align-items-center">
            <span class="bi bi-upload fs-4"></span>
@@ -121,22 +125,22 @@
            </div>
            </div>
 
-           <div class="btnFileViewer" obj-hidden="true">
-            <div id="btnFileViewer" class="file-viewer c-pointer mt-4 w-70 border-bx rounded rounded-3">
+           <div class="btnFileViewer" :obj-hidden="!mediaFileUploaded" v-else>
+            <div id="btnFileViewer" class="file-viewer c-pointer mt-5 w-70 border-bx rounded rounded-3">
              <div class="content-bx mx-auto mx-1 p-0 d-flex justify-content-start align-items-stretch gap-0 no-wrap rounded rounded-3">
                <div class="d-block w-auto p-4 d-flex justify-content-center align-items-center">
                <span class="bi bi-file-play fs-3"></span>
                 </div>
             <div class="d-flex w-auto flex-column p-3 ps-0 justify-content-center align-items-start gap-0">
-            <span class="title fw-bold fs-5">File name</span>
-            <span class="desc-text fw-semibold txt-lighter opacity-80 fs-6 small">video/mp4 | 25.6Mo ... </span>
+            <span class="title fw-bold fs-5">${mediaObj.files[0].name}</span>
+            <span class="desc-text fw-semibold txt-lighter opacity-80 fs-6 small">${mediaObj.files[0].type} | ${ bytesToMegabytes.toFixed(1) }Mo ... </span>
             </div>
              </div>
            </div>
            </div>
            
            
-           <div class="footer mt-5 d-flex justify-content-center align-items-center" :item-hidden="mediaFileUploaded == true ? false : true">
+           <div class="footer mt-4 d-flex justify-content-center align-items-center" :item-hidden="mediaFileUploaded == true ? false : true">
             <button class="btnUpload btn btn-primary fs-6 fw-semibold rounded rounded-3 m-1" id="btnUploader" :disabled="isFileUploading">Generate Lyrics <span class="bi bi-circle-square ms-1"></span></button>
            <button class="btnCancel btn btn-dark fs-6 fw-semibold rounded rounded-3 m-1" id="btnCancel" @click="cancelAiGeneration" :disabled="isFileUploading">Cancel <span class="bi bi-trash3 ms-1"></span></button>
            </div>
@@ -152,7 +156,7 @@
            data(){
             return {
                 mediaFileUploaded: false,
-                isFileUploading: false,
+                isFileUploading: false, 
                 mediaObj: null
             }
            },
@@ -164,29 +168,25 @@
               onMediaFileSelection(obj){
                 // Validate_and_filter_form_data
                   // activateAiGeneration
+                   this.mediaObj = obj.target;  
                    this.mediaFileUploaded = true; 
-                   this.mediaObject = obj.target;      
+                    
               },
               cancelAiGeneration(){
                 this.mediaFileUploaded = false;
                 this.isFileUploading = false;
-                this.mediaObj = null;
-              },  
+                this.mediaObj = null; 
+                this.$refs.fileObj.value = ""; 
+              } 
            },
-           mounted(){
-             
+           computed: {
+            bytesToMegabytes() {
+            return this.mediaObj.files[0].size / (1024 * 1024);
+              }  
            }
        });
 
        app.mount("#viewApp");
 
-
-       //
-       // #File : obj.target.files[0]
-                // #FileName : obj.target.files[0].name
-                // #FileType : obj.target.files[0].type
-                // #FileSize : obj.target.files[0].size
-                // #animation: name duration timing-function delay iteration-count direction fill-mode;
-                //___
     </script>
 {% endblock %}
