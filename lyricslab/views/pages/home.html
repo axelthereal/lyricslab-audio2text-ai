@@ -32,22 +32,74 @@
       }
   }
 
-  [media-loaded="false"]{
-
+  [obj-hidden="false"]{ 
+     display: block;
+     width: 100%;
+     margin-left: 0px; 
+     margin-top: 0px;
+     opacity: 1;
+     animation: hide 0.9s ease-in-out 0.1s 1 normal forwards; 
    }
-  [media-loaded="false"]{
-    
+   @keyframes hide {
+      0% {
+          margin-left: 0px;
+          margin-top: 0px;
+          opacity: 1;
+      }
+      100% {
+        margin-left:-50px;
+        margin-top: 50px;
+        opacity: 0;
+      }
+  }
+   [obj-hidden="true"]{
+    display: block;
+     width: 100%;
+     margin-left: -50px; 
+     margin-top: -30px;
+     opacity: 0;
+     animation: reveal 0.9s ease-in-out 0.1s 1 normal forwards; 
   }
 
-  #btnFileSelector:hover {
+  @keyframes reveal {
+    0% {
+        margin-left:-50px;
+        margin-top: -30px;
+        opacity: 0;
+      }
+      100% {
+          margin-left: 0px;
+          margin-top: 0px;
+          opacity: 1;
+      }
+  }
+  
+  
+
+  #btnFileSelector:hover,
+  #btnFileViewer:hover  {
     background-color: #fafafa !important;
   }
-  #btnFileSelector:active{
+  #btnFileSelector:active,
+  #btnFileViewer:active {
     background-color: #efefef !important;
   }
+  .border-bx{
+    padding: 1rem;
+    width: 100%;
+    background:linear-gradient(to right, #ffab4b, #f45872, #a94a8c) !important;
+    padding: 3px;
+  }
+  .border-bx .content-bx{
+    background-color: #fff;
+  }
+  .border-bx .content-bx .bi{
+      color: #f45872;
+  }
+
 </style>
     <div class="uploadbx mt-5 pt-2" id="viewApp">
-       <div class="container col-12 col-lg-5 p-5 mt-5">
+       <div class="container col-12 div col-lg-5 p-5 mt-5">
            <div class="header mt-3" align="center">
             <h2 class="title display-5 fw-semibold">Upload file.</h2>
             <p class="desc-text lead fw-semibold txt-light opacity-80 w-75 mt-3">Select and upload and audio and video file to genrate lyrics automaticaly using Ai.</p>
@@ -55,7 +107,10 @@
            
            <input type="file" name="fileObj" id="fileObj" item-hidden="true" class="form-control" placeholder="file here..." ref="fileObj" @change="onMediaFileSelection" value="" />
 
-           <div id="btnFileSelector" @click="toggleFilePicker" class="file-selector c-pointer mt-4 w-70 mx-auto mx-1 p-0 d-flex justify-content-start align-items-stretch gap-0 no-wrap rounded rounded-3 border border-2">
+           
+
+           <div class="btnFileSelector" obj-hidden="false">
+           <div id="btnFileSelector"  @click="toggleFilePicker" class="file-selector c-pointer mt-4 w-70 mx-auto mx-1 p-0 d-flex justify-content-start align-items-stretch gap-0 no-wrap rounded rounded-3 border border-2">
            <div class="d-block w-auto p-4 d-flex justify-content-center align-items-center">
            <span class="bi bi-upload fs-4"></span>
            </div>
@@ -63,6 +118,21 @@
             <span class="title fw-bold fs-5">Click to Select a Media File</span>
             <span class="desc-text fw-semibold txt-lighter opacity-80 fs-6 small">Select a .mp4 or .mp3 file to upload by clicking here... </span>
             </div>
+           </div>
+           </div>
+
+           <div class="btnFileViewer" obj-hidden="true">
+            <div id="btnFileViewer" class="file-viewer c-pointer mt-4 w-70 border-bx rounded rounded-3">
+             <div class="content-bx mx-auto mx-1 p-0 d-flex justify-content-start align-items-stretch gap-0 no-wrap rounded rounded-3">
+               <div class="d-block w-auto p-4 d-flex justify-content-center align-items-center">
+               <span class="bi bi-file-play fs-3"></span>
+                </div>
+            <div class="d-flex w-auto flex-column p-3 ps-0 justify-content-center align-items-start gap-0">
+            <span class="title fw-bold fs-5">File name</span>
+            <span class="desc-text fw-semibold txt-lighter opacity-80 fs-6 small">video/mp4 | 25.6Mo ... </span>
+            </div>
+             </div>
+           </div>
            </div>
            
            
@@ -74,8 +144,10 @@
     </div>
 
 
-    <script>
-       const app = createApp({
+    <script> 
+    // set_default
+
+      const app = createApp({
            delimiters: ["${", "}"],
            data(){
             return {
@@ -99,7 +171,10 @@
                 this.mediaFileUploaded = false;
                 this.isFileUploading = false;
                 this.mediaObj = null;
-              }
+              },  
+           },
+           mounted(){
+             
            }
        });
 
