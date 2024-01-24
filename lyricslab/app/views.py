@@ -11,11 +11,10 @@ def home_view(req):
 # handles_forms_uploads
 def upload_media(req):
     if req.method == 'POST' and req.FILES['fileObj']:
-        fileObj = req.POST.get("fileTitle")
-        print(f"title : {fileObj}")
-        filetitle = req.FILES['fileTitle']
-        instance = Media(title=filetitle, media_file=fileObj)
-        instance.save()
+        fileObj = req.FILES["fileObj"]
+        filetitle = req.POST.get("fileTitle")
+        dbreq = Media(title=filetitle, media_file=fileObj)
+        dbreq.save()
         return JsonResponse({
         "status": "success",
         "msg": "File Uploaded Successfully"
