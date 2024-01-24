@@ -13,9 +13,9 @@ def upload_media(req):
     if req.method == 'POST' and req.FILES['fileObj']:
         fileObj = req.POST.get("fileTitle")
         print(f"title : {fileObj}")
-        """filetitle = req.FILES['fileTitle']
+        filetitle = req.FILES['fileTitle']
         instance = Media(title=filetitle, media_file=fileObj)
-        instance.save()"""
+        instance.save()
         return JsonResponse({
         "status": "success",
         "msg": "File Uploaded Successfully"
