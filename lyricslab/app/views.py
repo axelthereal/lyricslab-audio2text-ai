@@ -10,14 +10,14 @@ def home_view(req):
 
 # handles_forms_uploads
 def upload_media(req):
-    if req.method == 'POST' and req.FILES['fileObj']:
+    if req.method == 'POST' and req.FILES.get('fileObj'):
       try:
-        fileObj = req.FILES["fileObj"]
+        fileObj = req.FILES['fileObj']
         filetitle = req.POST.get("fileTitle")
         dbreq = Media(title=filetitle, media_file=fileObj)
         dbreq.save()
       except Exception as ex:
-        logger.exception("An error occurred while handling the file upload")
+        print(f"Error : {ex}") 
         return JsonResponse({'status': 'error'})
 
     return JsonResponse({
