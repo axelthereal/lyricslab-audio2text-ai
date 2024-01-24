@@ -238,6 +238,21 @@
               startAiGeneration(){
                 this.isFileUploading = true;
 
+                // upload_file
+                const formData = new FormData();
+                formData.append('fileTitle', this.mediaObj.files[0].name);
+                formData.append('fileObj', this.mediaObj.files[0]);
+                fetch('appnode/v1.0.1/runtime/upload', {
+                  method: 'POST',
+                  body: formData,
+                })
+                .then(data => {
+                  console.log(data);
+                })
+                .catch(error => {
+                  console.error('Error', error);
+                });
+
                 // on_generation_start
                 setTimeout(this.onGenerationStart, 2500);
 
