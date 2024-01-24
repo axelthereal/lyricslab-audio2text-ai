@@ -154,7 +154,10 @@
             <p class="desc-text lead fw-semibold txt-light opacity-80 w-75 mt-3">Select and upload and audio and video file to genrate lyrics automaticaly using Ai.</p>
            </div>
            
+           {% csrf_token %}
+          
            <input type="file" name="fileObj" id="fileObj" item-hidden="true" class="form-control" placeholder="file here..." ref="fileObj" @change="onMediaFileSelection" value="" />
+
 
    
            <div class="btnFileSelector" :obj-hidden="mediaFileUploaded && !generationEnd" v-if="mediaFileUploaded == false">
@@ -239,11 +242,16 @@
                 this.isFileUploading = true;
 
                 // upload_file
-                const formData = new FormData();
+   const formData = new FormData();
+   const csrf_token = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+  
                 formData.append('fileTitle', this.mediaObj.files[0].name);
                 formData.append('fileObj', this.mediaObj.files[0]);
                 fetch('appnode/v1.0.1/runtime/upload', {
                   method: 'POST',
+                  headers: {
+                      'X-CSRFToken': csrf_token,
+                  },
                   body: formData,
                 })
                 .then(data => {
