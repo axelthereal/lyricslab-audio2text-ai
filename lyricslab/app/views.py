@@ -12,10 +12,10 @@ def home_view(req):
 def upload_media(req):
     if req.method == 'POST' and req.FILES.get('fileObj'):
       try:
-        fileObj = req.FILES['fileObj']
+        fileObj = req.FILES.get('fileObj')
         filetitle = req.POST.get("fileTitle")
-        dbreq = Media(title=filetitle, media_file=fileObj)
-        dbreq.save()
+        uploadreq = Media.objects.create(title=filetitle,  media_file=fileObj)
+        uploadreq.save()
       except Exception as ex:
         print(f"Error : {ex}") 
         return JsonResponse({'status': 'error'})
@@ -25,9 +25,5 @@ def upload_media(req):
         "msg": "File Uploaded Successfully"
     })
 
-    return JsonResponse({
-        "status": "error",
-        "msg": "File Not Found"
-    }) 
-
+  
     
